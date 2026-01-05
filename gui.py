@@ -143,14 +143,21 @@ class AgentGUI:
     def init_agent(self):
         """Initialize the desktop agent."""
         try:
+            # Try Claude first, then Gemini
             api_key = os.getenv("ANTHROPIC_API_KEY")
+            provider_type = "claude"
+            
+            if not api_key:
+                api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+                provider_type = "gemini"
+            
             if not api_key:
                 self.status_var.set("❌ API key not set")
-                self.log("ERROR: ANTHROPIC_API_KEY not set in environment")
-                self.log("Set it with: export ANTHROPIC_API_KEY='your-key'")
+                self.log("ERROR: No API key found")
+                self.log("Set ANTHROPIC_API_KEY for Claude or GOOGLE_API_KEY for Gemini")
                 return
                 
-            self.agent = DesktopAgent(api_key)
+            self.agent = DesktopAgent(provider_type=provider_type, api_key=api_key)
             self.status_var.set("🟢 Ready")
             self.log("Agent initialized successfully")
             self.log(f"Screen: {self.agent.screen_width}x{self.agent.screen_height}")

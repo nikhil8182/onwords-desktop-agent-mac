@@ -23,10 +23,23 @@ chmod +x setup.sh
 
 ### 2. Set API Key
 
+**Option A: Claude (Anthropic)**
 ```bash
 # Add to your ~/.zshrc
 export ANTHROPIC_API_KEY='your-api-key-here'
 source ~/.zshrc
+```
+
+**Option B: Gemini (Google)**
+```bash
+# Add to your ~/.zshrc
+export GOOGLE_API_KEY='your-api-key-here'
+source ~/.zshrc
+```
+
+**Note:** The agent will auto-detect which API key is available and use that provider. You can also specify the provider when creating the agent:
+```python
+agent = DesktopAgent(provider_type="gemini")  # or "claude"
 ```
 
 ### 3. Grant Permissions (REQUIRED!)
